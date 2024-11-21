@@ -1,0 +1,301 @@
+@import './_settings';
+@import 'foundation';
+
+@include foundation-everything($prototype: true);
+
+$sticky-shrinknav-menu-height: rem-calc(60);
+$sticky-shrinknav-hero-height: 300px;
+
+
+body {
+  padding-top: $sticky-shrinknav-hero-height + 30px;
+}
+
+.sticky-shrinknav-menu {
+  @include horizontal-center;
+  bottom: 0;
+  height: $sticky-shrinknav-menu-height;
+  line-height: $sticky-shrinknav-menu-height;
+  width: 100%;
+  background-color: rgba($primary-color, 0.5);
+  transition: all 0.5s ease;
+
+  li {
+    border-radius: 2px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 1px $white;
+    }
+  }
+
+  a {
+    color: $white;
+  }
+}
+
+.sticky-shrinknav-header-title {
+  transition: all 0.3s ease;
+  position: relative;
+  transform: translateY(-$sticky-shrinknav-menu-height/2);
+  margin-bottom: 0;
+  color: $white;
+}
+
+.sticky-shrinknav-header {
+  width: 100%;
+  height: $sticky-shrinknav-hero-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('https://static.vecteezy.com/ti/gratis-vector/p2/1882528-prachtig-landschap-dennenbos-met-betoverende-berggezichten-vector.jpg') 10% no-repeat;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+body.sticky-shrinknav-wrapper {
+  padding-top: 130px;
+
+  .sticky-shrinknav-header{
+    height: $sticky-shrinknav-menu-height;
+    background-color: rgba($secondary-color, 0.9);
+
+    .sticky-shrinknav-header-title{
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+  }
+}
+@mixin circle-graph-circle($size) {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    left: calc(50% - #{$size/2});
+    top: calc(50% - #{$size/2});
+    width: $size;
+    height: $size;
+  }
+  
+  $circle-graph-size: rem-calc(180);
+  $circle-graph-percent-number-size: rem-calc(24);
+  $circle-graph-percent-unit-size: rem-calc(16);
+  $circle-graph-background-color: $light-gray;
+  $circle-graph-empty-color: $dark-gray;
+  $circle-graph-fill-color: $primary-color;
+  
+  .circle-graph {
+    width: $circle-graph-size;
+    height: $circle-graph-size;
+    border-radius: 50%;
+    background-color: $circle-graph-empty-color;
+    position: relative;
+  
+    &.gt-50 {
+      background-color: $circle-graph-fill-color;
+    }
+  }
+  
+  .circle-graph-progress {
+    @include circle-graph-circle($circle-graph-size);
+    clip: rect(0, $circle-graph-size, $circle-graph-size, #{$circle-graph-size/2});
+  
+    .circle-graph-progress-fill {
+      @include circle-graph-circle($circle-graph-size);
+      clip: rect(0, #{$circle-graph-size/2}, $circle-graph-size, 0);
+      background: $circle-graph-fill-color;
+      transform: rotate(60deg);
+    }
+  
+    .gt-50 & {
+      clip: rect(0, #{$circle-graph-size/2}, $circle-graph-size, 0);
+  
+      .circle-graph-progress-fill {
+        clip: rect(0, $circle-graph-size, $circle-graph-size, #{$circle-graph-size/2});
+        background: $circle-graph-empty-color;
+      }
+    }
+  }
+  .circle-graph-percents {
+    @include circle-graph-circle(#{$circle-graph-size/1.45});
+    background: $circle-graph-background-color;
+    text-align: center;
+    display: table;
+    z-index: 4;
+  
+    .circle-graph-percents-number {
+      display: block;
+      font-size: $circle-graph-percent-number-size;
+      font-weight: bold;
+      color: $circle-graph-fill-color;
+    }
+  
+    .circle-graph-percents-units {
+      display: block;
+      font-size: $circle-graph-percent-unit-size;
+      font-weight: bold;
+    }
+  }
+  .circle-graph-percents-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 0;
+  
+    span {
+      line-height: 1;
+    }
+  }
+  $rating-block-margin-bottom: 2rem; //spacing below each rating line
+$rating-block-star-color: $alert-color;
+
+.rating-block {
+  padding: 2px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .ratings-type {
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+
+  .rating-block {
+    display: flex;
+    align-items: center;
+    margin-bottom: $rating-block-margin-bottom;
+  }
+
+  .rating-block-rating {
+    display: flex;
+  }
+
+  .star {
+    cursor: pointer;
+    stroke: $rating-block-star-color;
+  }
+
+  .rating-block-rating .star.selected polygon {
+    fill: $rating-block-star-color;
+  }
+
+  .rating-block-rating.is-voted .star polygon {
+    fill: $rating-block-star-color;
+  }
+
+  .rating-block-rating.is-voted .star.selected ~ .star polygon {
+    fill: transparent;
+  }
+}
+$progress-indicator-complete: $primary-color;
+$progress-indicator-current: lighten($primary-color, 20%);
+$progress-indicator-incomplete: $light-gray;
+$progress-indicator-step-size: 1.5em;
+$progress-indicator-width: 100%;
+
+.progress-indicator {
+  list-style: none;
+  width: $progress-indicator-width;
+  margin: 0 auto;
+  padding: 0;
+  display: table;
+  table-layout: fixed;
+
+  > li {
+    position: relative;
+    display: table-cell;
+    text-align: center;
+    font-size: 1.5em;
+
+    span {
+      position: absolute;
+      color: $light-gray;
+      transform: translateX(-50%);
+      font-weight: 600;
+      font-size: rem-calc(14);
+      letter-spacing: 0.05px;
+      text-transform: uppercase;
+    }
+
+    &::before {
+      content: attr(data-step);
+      display: block;
+      margin: 0 auto;
+      background: $progress-indicator-incomplete;
+      width: $progress-indicator-step-size;
+      height: $progress-indicator-step-size;
+      text-align: center;
+      margin-bottom: 0.25em;
+      line-height: $progress-indicator-step-size;
+      border-radius: 100%;
+      position: relative;
+      z-index: 1000;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      background: $progress-indicator-incomplete;
+      width: 100%;
+      height: $progress-indicator-step-size/10;
+      top: 50%; // height of bar
+      transform: translateY(-100%);
+      left: 50%;
+      margin-left: 1.5em\9;
+      z-index: 0;
+    }
+
+    &:last-child:after {
+      display: none;
+    }
+
+    &.is-complete {
+      color: $progress-indicator-complete;
+
+      &::before,
+      &::after {
+        color: $white;
+        background: $progress-indicator-complete;
+      }
+
+      span {
+        color: $progress-indicator-complete;
+      }
+    }
+
+    &.is-current {
+      color: $progress-indicator-current;
+
+      &::before {
+        color: $white;
+        background: $progress-indicator-current;
+      }
+
+      span {
+        color: $progress-indicator-current;
+      }
+    }
+  }
+}
+.input-group-rounded {
+    .input-group-field {
+      border-radius: 5000px 0 0 5000px;
+      padding-left: 1rem;
+    }
+  
+    .input-group-button .button {
+      border-radius:  0 5000px 5000px 0;
+      font-size: 0.8rem;
+    }
+  }
+  
+  
+
+
+
+
+
+  
